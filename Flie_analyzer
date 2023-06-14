@@ -1,0 +1,35 @@
+#!/bin/bash
+
+SOURCE_DIR="/home/kuzuri/Desktop/SOURCE_DIR"
+DEST_DIR="home/kuzuri/Desktop/DEST_DIR"
+
+# Create destination directory if it doesn't exist
+mkdir -p "$DEST_DIR"
+
+# Define file extensions and corresponding folders
+declare -A EXTENSIONS=(
+  ["txt"]="Text"
+  ["jpg"]="Images"
+  ["mp3"]="Music"
+  ["pdf"]="Documents"
+)
+
+# Iterate over files in the source directory
+for file in "$SOURCE_DIR"/*; do
+  # Extract the file extension
+  extension="${file##*.}"
+  
+  # Check if the extension exists in the array
+  if [[ -n "${EXTENSIONS[$extension]}" ]]; then
+    # Create the destination subdirectory if it doesn't exist
+    mkdir -p "$DEST_DIR/${EXTENSIONS[$extension]}"
+    
+    # Move the file to the destination folder
+    mv "$file" "$DEST_DIR/${EXTENSIONS[$extension]}/"
+    
+    # Log the file movement
+    echo "Moved: $file -> $DEST_DIR/${EXTENSIONS[$extension]}/"
+  fi
+done
+
+
